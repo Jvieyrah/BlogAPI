@@ -23,8 +23,6 @@ const jwtConfig = {
 }
 
 const userfound = await User.findOne({ where: { email } });
-// const userfound = await user.getAll();
-console.log ('retorno: ' + userfound);
 if (!userfound || userfound.password !== password) {
 return res.status(400).json({ message: 'Invalid fields' });
 }
@@ -38,4 +36,3 @@ module.exports = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
