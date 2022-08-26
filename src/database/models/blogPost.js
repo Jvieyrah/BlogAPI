@@ -25,6 +25,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.DATE,
     },
+  }, {
+    timestamps: false,
+    tableName: 'BlogPosts',
   });
   blogPost.associate = (models) => {
     blogPost.belongsTo(models.User, {

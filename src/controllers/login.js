@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 // const express = require('express');
 
-const { user } = require('../database/models');
+const { User } = require('../database/models');
 
 const segredo = process.env.JWT_SECRET;
 
@@ -22,7 +22,7 @@ const jwtConfig = {
     return res.status(400).json({ message: 'Some required fields are missing' });
 }
 
-const userfound = await user.findOne({ where: { email } });
+const userfound = await User.findOne({ where: { email } });
 // const userfound = await user.getAll();
 console.log ('retorno: ' + userfound);
 if (!userfound || userfound.password !== password) {
