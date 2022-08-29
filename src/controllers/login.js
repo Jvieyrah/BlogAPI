@@ -26,7 +26,8 @@ const userfound = await User.findOne({ where: { email } });
 if (!userfound || userfound.password !== password) {
 return res.status(400).json({ message: 'Invalid fields' });
 }
-encode(userfound, res);
+const { id, displayName, image } = userfound;
+encode({ id, displayName, email, image }, res);
 }
 
 module.exports = async (req, res) => {
