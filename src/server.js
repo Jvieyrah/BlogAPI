@@ -2,6 +2,7 @@ require('dotenv').config();
 const app = require('./api');
 const login = require('./controllers/login');
 const user = require('./controllers/user');
+const categories = require('./controllers/categories');
 const Validators = require('./database/middlewares/Validators');
 const auth = require('./database/middlewares/auth');
 
@@ -17,5 +18,6 @@ app.post('/login', login);
 app.post('/user', Validators.validate, user.create);
 app.get('/user', auth, user.getAll);
 app.get('/user/:id', auth, user.getById);
+app.post('/categories', auth, Validators.validateCategory, categories.create);
 
 app.listen(port, () => console.log('ouvindo porta', port));
