@@ -19,5 +19,6 @@ app.post('/user', Validators.validate, user.create);
 app.get('/user', auth, user.getAll);
 app.get('/user/:id', auth, user.getById);
 app.post('/categories', auth, Validators.validateCategory, categories.create);
+app.get('/categories', auth, categories.getAll);
 
 app.listen(port, () => console.log('ouvindo porta', port));

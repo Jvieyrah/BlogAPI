@@ -10,4 +10,13 @@ const create = async (req, res) => {
     res.status(201).json(insertCategory);
     };
 
-    module.exports = { create };
+const getAll = async (_req, res) => {
+    try {
+        const categories = await Category.findAll();
+        res.status(200).json(categories);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+    module.exports = { create, getAll };
