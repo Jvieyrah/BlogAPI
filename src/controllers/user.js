@@ -42,4 +42,17 @@ const getAll = async (req, res) => {
     }
 };
 
-module.exports = { create, getAll };
+const getById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findByPk(id, { attributes: { exclude: ['password'] } });
+        if (!user) {
+            return res.status(404).json({ message: 'User does not exist' });
+        }
+        res.status(200).json(user); 
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { create, getAll, getById };

@@ -16,5 +16,6 @@ app.get('/', (_request, response) => {
 app.post('/login', login);
 app.post('/user', Validators.validate, user.create);
 app.get('/user', auth, user.getAll);
+app.get('/user/:id', auth, user.getById);
 
 app.listen(port, () => console.log('ouvindo porta', port));
