@@ -25,10 +25,21 @@ const { id, displayName, image } = insertUser;
 encode({ id, displayName, email, image }, res);
 }
 
-module.exports = async (req, res) => {
+const create = async (req, res) => {
     try {
      save(req, res);
    } catch (error) {
        res.status(500).json({ message: error.message });
    }
 };
+
+const getAll = async (req, res) => {
+    try {
+        const users = await User.findAll({ attributes: { exclude: ['password'] } });
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { create, getAll };

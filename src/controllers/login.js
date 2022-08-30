@@ -11,7 +11,7 @@ const jwtConfig = {
  };
 
  async function encode(userfound, res) {
-   const token = await jwt.sign({ data: userfound }, segredo, jwtConfig);
+   const token = await jwt.sign(userfound, segredo, jwtConfig);
    res.status(200).json({ token });
  }
 
@@ -26,8 +26,8 @@ const userfound = await User.findOne({ where: { email } });
 if (!userfound || userfound.password !== password) {
 return res.status(400).json({ message: 'Invalid fields' });
 }
-const { id, displayName, image } = userfound;
-encode({ id, displayName, email, image }, res);
+
+encode({ email: userfound.email }, res);
 }
 
 module.exports = async (req, res) => {
