@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const config = require('../database/config/config');
 
-const { PostCategory, User, BlogPost } = require('../database/models');
+const { Category, PostCategory, User, BlogPost } = require('../database/models');
 
 const sequelize = new Sequelize(config.development);
 
@@ -13,10 +13,8 @@ const create = async (req, res) => {
     const userId = await User.findOne({ where: { email } });   
     const postConstructor = await BlogPost
     .create({ title, content, userId: userId.dataValues.id }, { transaction: t });
-    console.log('newpost ',postConstructor);
     const categoryInsert = categoryIds.map((categoryId) => ({
-        postId: postConstructor.dataValues.id, categoryId }));
-    console.log('catinsert ',categoryInsert);
+    postId: postConstructor.dataValues.id, categoryId }));
     await PostCategory.bulkCreate(categoryInsert, { transaction: t }); 
     await t.commit();
     return res.status(201).json(postConstructor.dataValues);   

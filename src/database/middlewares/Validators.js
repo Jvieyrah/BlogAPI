@@ -38,7 +38,7 @@ async function validatePostCategory(req, res, next) {
       });
     // const category = await Category.findAll();
     // const categoryIdsArray = category.map((cat) => cat.id);
-    if (!rows.length){
+    if (!rows.length) {
         return res.status(400).json({ message: notFound });
     }
     next();
