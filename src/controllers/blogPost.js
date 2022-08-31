@@ -45,4 +45,25 @@ const getAll = async (_req, res) => {
     }
 };
 
-    module.exports = { create, getAll };
+const getById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const post = await BlogPost.findOne({ where: { id },
+            include: [{
+            model: User,
+            as: 'user',
+            attributes: {
+                exclude: ['password'],
+            },
+        }, {
+            model: Category,
+            as: 'categories',
+        }] });
+        if (!post) return res.status(404).json({ message: 'Post does not exist' });
+        return res.status(200).json(post);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};   
+
+    module.exports = { create, getAll, getById };
