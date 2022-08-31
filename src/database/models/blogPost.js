@@ -16,8 +16,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       foreignKey: true,
       allowNull: false,
-     }
-  }, {
+     },
+     published: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    updated: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+  }, { 
     createdAt: 'published',
     updatedAt: 'updated',
     tableName: 'BlogPosts',
