@@ -16,17 +16,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       foreignKey: true,
       allowNull: false,
-     },
-    published: {
-      allowNull: false,
-      type: DataTypes.DATE,
-    },
-    updated: {
-      allowNull: false,
-      type: DataTypes.DATE,
-    },
+     }
   }, {
-    timestamps: false,
+    createdAt: 'published',
+    updatedAt: 'updated',
     tableName: 'BlogPosts',
   });
   blogPost.associate = (models) => {

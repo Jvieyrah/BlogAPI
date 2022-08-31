@@ -3,6 +3,7 @@ const app = require('./api');
 const login = require('./controllers/login');
 const user = require('./controllers/user');
 const categories = require('./controllers/categories');
+const blogPost = require('./controllers/blogPost');
 const Validators = require('./database/middlewares/Validators');
 const auth = require('./database/middlewares/auth');
 
@@ -20,5 +21,11 @@ app.get('/user', auth, user.getAll);
 app.get('/user/:id', auth, user.getById);
 app.post('/categories', auth, Validators.validateCategory, categories.create);
 app.get('/categories', auth, categories.getAll);
+app.post('/post',
+ auth,
+ Validators.validatePostfields,
+ Validators.validatePostCategory,
+ blogPost.create);
+app.get('/post', auth, blogPost.getAll);
 
 app.listen(port, () => console.log('ouvindo porta', port));
