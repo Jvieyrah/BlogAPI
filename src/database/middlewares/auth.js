@@ -18,7 +18,7 @@ module.exports = async (req, res, next) => {
         if (!userfound) {
             return res.status(401).json({ message: QUATROZEROUM });
         }
-        req.email = email;
+        req.payload = email;
 
         next();
     } catch (error) {
