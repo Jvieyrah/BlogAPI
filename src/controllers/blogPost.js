@@ -45,25 +45,51 @@ const getAll = async (_req, res) => {
     }
 };
 
+async function getService(id) {
+    return BlogPost.findOne({ where: { id },
+        include: [{
+        model: User,
+        as: 'user',
+        attributes: {
+            exclude: ['password'],
+        },
+    }, {
+        model: Category,
+        as: 'categories',
+    }] });
+}
+
 const getById = async (req, res) => {
     try {
         const { id } = req.params;
-        const post = await BlogPost.findOne({ where: { id },
-            include: [{
-            model: User,
-            as: 'user',
-            attributes: {
-                exclude: ['password'],
-            },
-        }, {
-            model: Category,
-            as: 'categories',
-        }] });
+        const post = await getService(id);
         if (!post) return res.status(404).json({ message: 'Post does not exist' });
         return res.status(200).json(post);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
-};   
+};
 
-    module.exports = { create, getAll, getById };
+const updatePost = async (req, res) => {
+    try {
+        const email = req.payload;
+        const { id } = req.params;
+        const { title, content } = req.body;
+        const post = await BlogPost.findOne({ where: { id } });
+        // if (!post) return res.status(404).json({ message: 'Post does not exist' });
+        const postOwner = post.userId;
+        const postOwnerEmail = await User.findOne({ where: { id: postOwner } });
+        if (postOwnerEmail.email !== email) {
+            return res.status(401).json({ message: 'Unauthorized user' });
+        }
+       await BlogPost.update({ title, content }, { where: { id } });
+       const returned = await getService(id);
+        console.log(returned);
+        return res.status(200).json(returned);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+    module.exports = { create, getAll, getById, updatePost };

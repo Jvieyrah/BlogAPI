@@ -20,12 +20,23 @@ function validateCategory(req, res, next) {
     next();
 }
 
-const missing = 'Some required fields are missing';
+function fieldsMissing(res) {
+    const missing = 'Some required fields are missing';
+    return res.status(400)
+        .json({ message: missing });
+}
 function validatePostfields(req, res, next) {
     const { title, content, categoryIds } = req.body;
     if (!title || !content || !categoryIds) {
-     return res.status(400)
-    .json({ message: missing });
+        return fieldsMissing(res);
+    }
+    next();
+}
+
+function validateUpdatedPostfields(req, res, next) {
+    const { title, content } = req.body;
+    if (!title || !content) {
+        return fieldsMissing(res);
     }
     next();
 }
@@ -44,4 +55,8 @@ async function validatePostCategory(req, res, next) {
     next();
 }
 
-module.exports = { validate, validateCategory, validatePostfields, validatePostCategory };
+module.exports = { validate,
+     validateCategory,
+     validatePostfields,
+     validateUpdatedPostfields,
+     validatePostCategory };
