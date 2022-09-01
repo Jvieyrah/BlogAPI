@@ -31,5 +31,6 @@ app.get('/post', auth, blogPost.getAll);
 app.get('/post/:id', auth, blogPost.getById);
 app.put('/post/:id', auth, Validators.validateUpdatedPostfields, blogPost.updatePost);
 app.delete('/post/:id', auth, blogPost.deletePost);
+app.post('/post/search', auth, blogPost.searchPost);
 
 app.listen(port, () => console.log('ouvindo porta', port));

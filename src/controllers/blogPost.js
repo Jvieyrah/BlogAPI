@@ -110,4 +110,35 @@ const deletePost = async (req, res) => {
     }
 };
 
-    module.exports = { create, getAll, getById, updatePost, deletePost };
+async function getqQery(q) {
+    return BlogPost.findAll({
+        where: {
+            [Sequelize.Op.or]: [
+                { title: { [Sequelize.Op.like]: `%${q}%` } },
+                { content: { [Sequelize.Op.like]: `%${q}%` } },
+            ],
+        },
+        include: [{
+            model: User,
+            as: 'user',
+            attributes: {
+                exclude: ['password'],
+            },
+        }, {
+            model: Category,
+            as: 'categories',
+        }],
+    });
+}
+const searchPost = async (req, res) => {
+    try {
+        const { q } = req.query;
+        const posts = await getqQery(q) || [];
+        return res.status(200).json(posts);
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+    module.exports = { create, getAll, getById, updatePost, deletePost, searchPost };
