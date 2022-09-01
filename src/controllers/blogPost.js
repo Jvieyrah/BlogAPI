@@ -92,4 +92,22 @@ const updatePost = async (req, res) => {
     }
 };
 
-    module.exports = { create, getAll, getById, updatePost };
+const deletePost = async (req, res) => {
+    try {
+        const email = req.payload;
+        const { id } = req.params;
+        const post = await BlogPost.findOne({ where: { id } });
+        if (!post) return res.status(404).json({ message: 'Post does not exist' });
+        const postOwner = post.userId;
+        const postOwnerEmail = await User.findOne({ where: { id: postOwner } });
+        if (postOwnerEmail.email !== email) {
+            return res.status(401).json({ message: 'Unauthorized user' });
+        }
+        await BlogPost.destroy({ where: { id } });
+        return res.status(204).end();
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+    module.exports = { create, getAll, getById, updatePost, deletePost };

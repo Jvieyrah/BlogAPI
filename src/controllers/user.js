@@ -55,4 +55,14 @@ const getById = async (req, res) => {
     }
 };
 
-module.exports = { create, getAll, getById };
+const userDelete = async (req, res) => {
+    try {
+        const email = req.payload;
+        await User.destroy({ where: { email } });
+        res.status(204).end();
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { create, getAll, getById, userDelete };
